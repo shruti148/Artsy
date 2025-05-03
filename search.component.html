@@ -1,0 +1,335 @@
+<div class="container my-4">
+  <!-- Notification Stack (top-right corner) -->
+  <div class="notification-container">
+    <div 
+      *ngFor="let note of notifications"
+      class="alert alert-dismissible fade show notification-alert"
+      [ngClass]="{'alert-success': note.type === 'success', 'alert-danger': note.type === 'danger'}"
+      role="alert"
+    >
+      <div class="notification-content">
+        {{ note.message }}
+      </div>
+      <button type="button" class="btn-close notification-close" aria-label="Close" (click)="dismissNotification(note.id)">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SEARCH VIEW -->
+  <div *ngIf="!isFavoritesView">
+    <!-- Search Bar -->
+    <div class="row justify-content-center">
+      <div class="col-11 col-md-10 col-lg-9">
+        <form (ngSubmit)="onSearch()" class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Please enter an artist name"
+            [(ngModel)]="artistName"
+            name="artistName"
+            required
+          />
+          <button class="btn btn-primary d-flex align-items-center" type="submit" [disabled]="!artistName.trim()">
+            <span>Search</span>
+            <div *ngIf="loading" class="spinner-border spinner-border-sm ms-2" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </button>
+          
+          <button class="btn btn-secondary" type="button" (click)="onClear()">Clear</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Artist Cards Row -->
+    <div class="row mt-4" *ngIf="artists && artists.length">
+      <div class="col-12">
+        <div class="horizontal-scroll d-flex flex-nowrap" style="max-width: 64rem; margin: 0 auto;">
+          <div
+            class="card m-2 flex-shrink-0 position-relative"
+            style="width: 12rem;"
+            *ngFor="let artist of artists"
+            (click)="onSelectArtist(artist)"
+            (mouseenter)="artist.isHovered = true"
+            (mouseleave)="artist.isHovered = false"
+            [ngClass]="{'bg-light': artist.isHovered}"
+          >
+            <!-- Favorite Star Button (visible only when logged in) -->
+            <button
+              *ngIf="isLoggedIn"
+              class="favorite-button"
+              [class.is-favorite]="isFavorite(artist.id)"
+              (click)="toggleFavorite(artist); $event.stopPropagation();"
+              style="
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                z-index: 1000;
+                background: rgba(0, 119, 204, 0.9); /* Blue background */
+                border: 2px solid rgba(0, 119, 204, 0.5); /* Blue border */
+                border-radius: 50%;
+                padding: 5px;
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+                color: white; /* White star icon */
+              "
+            >
+              <i class="far fa-star" *ngIf="!isFavorite(artist.id)"></i>
+              <i class="fas fa-star" *ngIf="isFavorite(artist.id)"></i>
+            </button>
+
+            <img
+              [src]="getArtistThumbnail(artist)"
+              class="card-img-top"
+              alt="{{ artist.name }}"
+              style="height: 180px; object-fit: cover;"
+            />
+            <div class="card-body p-0">
+              <h5 class="card-title p-2 m-0 text-white">{{ artist.name }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Results Message -->
+    <div class="row mt-4" *ngIf="searchPerformed && (!artists || !artists.length)">
+      <div class="col-12">
+        <div class="alert alert-danger text-center">No results.</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- FAVORITES VIEW -->
+  <div *ngIf="isFavoritesView" class="favorites-container">
+    <!-- Loading spinner -->
+    <div *ngIf="favoritesLoading" class="text-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading favorites...</span>
+      </div>
+    </div>
+    
+    <!-- No favorites message -->
+    <div *ngIf="!favoritesLoading && (!favorites || !favorites.length)" class="alert alert-danger text-center my-4">
+      No favorite artists.
+    </div>
+    
+    <!-- Favorites grid -->
+    <div class="favorites-grid" *ngIf="!favoritesLoading && favorites && favorites.length">
+      <div *ngFor="let favorite of favorites" class="favorite-artist-card"
+           [style.background-image]="'url(' + (favorite.thumbnail || 'assets/artsy_logo.svg') + ')'"
+           (click)="navigateToArtistDetails(favorite.artistId)">
+        <div class="card-content">
+          <div class="artist-details">
+            <h3>{{favorite.artistName}}</h3>
+            <div class="artist-meta">
+              <div class="birth-death" *ngIf="favorite.birthYear">
+                {{favorite.birthYear}}<span *ngIf="favorite.deathYear"> - {{favorite.deathYear}}</span>
+              </div>
+              <div class="nationality">
+                {{favorite.nationality || 'Unknown'}}
+              </div>
+            </div>
+            <div class="time-ago">{{getRelativeTime(favorite.addedAt)}}</div>
+          </div>
+          <button class="remove-button" (click)="removeFromFavorites(favorite, $event)">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Artist Details Section (visible in both views) -->
+  <div class="row mt-4" *ngIf="selectedArtist">
+    <div class="col-12">
+      <!-- Tabs -->
+      <ul class="nav nav-tabs justify-content-center d-flex" style="max-width: 64rem; margin: 0 auto;">
+        <li class="nav-item flex-fill text-center">
+          <a class="nav-link" [ngClass]="{'active': activeTab === 'info'}" (click)="activeTab = 'info'">
+            Artist Info
+          </a>
+        </li>
+        <li class="nav-item flex-fill text-center">
+          <a class="nav-link" [ngClass]="{'active': activeTab === 'artworks'}" (click)="activeTab = 'artworks'">
+            Artworks
+          </a>
+        </li>
+      </ul>
+
+      <!-- Tab Content -->
+      <div class="tab-content mt-3" style="max-width: 64rem; margin: 0 auto;">
+        <!-- Artist Info Tab -->
+        <div class="tab-pane fade" [ngClass]="{'show active': activeTab === 'info'}">
+          <!-- Artist Header: Name + Star Button -->
+          <div class="artist-header text-center mb-2">
+            <h2 class="artist-name d-inline-block mb-0" style="font-size: 2rem; font-weight: bold;">
+              {{ selectedArtist.name }}
+            </h2>
+            <button
+              *ngIf="isLoggedIn"
+              class="favorite-button"
+              [class.is-favorite]="isFavorite(selectedArtist.id)"
+              (click)="toggleFavorite(selectedArtist); $event.stopPropagation();"
+              style="
+                position: static;
+                display: inline-block;
+                vertical-align: middle;
+                margin-left: 0.5rem;
+              "
+            >
+              <i class="far fa-star" *ngIf="!isFavorite(selectedArtist.id)"></i>
+              <i class="fas fa-star" *ngIf="isFavorite(selectedArtist.id)"></i>
+            </button>
+          </div>
+
+          <!-- Artist Details: Nationality, Birth–Death -->
+          <div class="artist-details text-center mb-3" style="font-size: 1.1rem;">
+            <span *ngIf="selectedArtist.nationality">
+              {{ selectedArtist.nationality }}
+            </span>
+            <span *ngIf="selectedArtist.birthday">
+              <ng-container *ngIf="selectedArtist.nationality">, </ng-container>
+              {{ selectedArtist.birthday }}
+            </span>
+            <span *ngIf="selectedArtist.deathday">
+              &ndash; {{ selectedArtist.deathday }}
+            </span>
+          </div>
+
+          <!-- Biography -->
+          <div class="artist-biography" style="line-height: 1.5; word-wrap: break-word;">
+            <p>{{ selectedArtist.biography }}</p>
+          </div>
+
+          <!-- Similar Artists Section -->
+          <div class="similar-artists mt-4 mb-0" *ngIf="selectedArtist && similarArtists && similarArtists.length">
+            <h3 class="text-right mb-3">Similar Artists</h3>
+            <div class="row justify-content-start mb-0" style="flex-wrap: nowrap; overflow-x: auto;">
+              <div class="col-auto px-0" *ngFor="let artist of similarArtists">
+                <div class="card mx-1 mb-0" style="width: 12rem; position: relative;" (click)="navigateToArtist(artist)">
+                  <!-- Star Favorite Button -->
+                  <button 
+                    *ngIf="isLoggedIn"
+                    class="favorite-button" 
+                    [class.is-favorite]="isFavorite(artist.id)"
+                    (click)="toggleFavorite(artist, $event)"
+                    style="
+                      position: absolute;
+                      top: 10px;
+                      right: 10px;
+                      z-index: 1000;
+                      background: rgba(0, 119, 204, 0.9); /* Blue background */
+                      border: 2px solid rgba(0, 119, 204, 0.5); /* Blue border */
+                      border-radius: 50%;
+                      padding: 5px;
+                      width: 32px;
+                      height: 32px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      cursor: pointer;
+                      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                      color: white; /* White star icon */
+                    "
+                  >
+                    <i [class]="isFavorite(artist.id) ? 'fas fa-star' : 'far fa-star'"></i>
+                  </button>
+                  
+                  <img
+                    [src]="artist.thumbnail || 'default-image.png'"
+                    class="card-img-top"
+                    alt="{{ artist.name }}"
+                    style="height: 180px; object-fit: cover;"
+                  />
+                  <h5 class="text-center mb-0">{{ artist.name }}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Artworks Tab -->
+        <div class="tab-pane fade" [ngClass]="{'show active': activeTab === 'artworks'}">
+          <div *ngIf="selectedArtist.artworks && selectedArtist.artworks.length; else noArtworks">
+            <div class="row">
+              <div class="col-md-3 mb-3" *ngFor="let artwork of selectedArtist.artworks">
+                <div class="card border-0">
+                  <img
+                    [src]="artwork.thumbnail"
+                    class="card-img-top"
+                    alt="{{ artwork.title }}"
+                    style="width: 100%; height: auto; object-fit: contain;"
+                  />
+                  <div class="card-body text-center">
+                    <h6 class="card-title mb-2">
+                      {{ artwork.title }}<span *ngIf="artwork.date">, {{ artwork.date }}</span>
+                    </h6>
+                    <button class="btn btn-view-categories" (click)="showCategories(artwork)">
+                      View categories
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- No Artworks Template -->
+          <ng-template #noArtworks>
+            <div class="alert alert-warning">No artworks.</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Categories Modal (Updated to match Image 2) -->
+  <div class="modal fade" id="categoriesModal" tabindex="-1" aria-labelledby="categoriesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <div class="d-flex align-items-center">
+              <img *ngIf="selectedArtwork?.thumbnail" [src]="selectedArtwork?.thumbnail" alt="{{ selectedArtwork?.title }}" 
+                  style="height: 40px; width: auto; margin-right: 10px;">
+              <h5 class="modal-title m-0" id="categoriesModalLabel">{{ selectedArtwork?.title }}</h5>
+            </div>
+            <small *ngIf="selectedArtwork?.date" class="text-muted">{{ selectedArtwork?.date }}</small>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Loading Spinner -->
+          <div *ngIf="categoriesLoading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          
+          <!-- Error Message -->
+          <div *ngIf="categoriesError && !categoriesLoading" class="alert alert-info">
+            {{ categoriesError }}
+          </div>
+          
+          <!-- Categories Grid (Updated to match Image 2 style) -->
+          <div *ngIf="!categoriesLoading && !categoriesError && categories.length > 0" class="row">
+            <div class="col-6 col-md-3 mb-4" *ngFor="let category of categories">
+              <div class="card border bg-white">
+                <img [src]="category._links?.thumbnail?.href || 'assets/placeholder.png'" class="card-img-top" 
+                     alt="{{ category.name }}" style="height: 180px; object-fit: cover;">
+                <div class="card-footer bg-white p-2 text-center border-top-0">
+                  <small class="text-body">{{ category?.name || 'Unknown' }}</small>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

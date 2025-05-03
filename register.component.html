@@ -1,0 +1,71 @@
+<!-- register.component.html -->
+<div class="register-page">
+    <div class="register-container">
+      <div class="register-card">
+        <h2 class="card-title mb-4">Register</h2>
+        <form (ngSubmit)="register()" #registerForm="ngForm">
+          <!-- Full Name Field -->
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name</label>
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              class="form-control"
+              placeholder="Enter your full name"
+              [(ngModel)]="fullName"
+              required
+            />
+            <div *ngIf="registerForm.submitted && !fullName" class="text-danger small">
+              Full name is required.
+            </div>
+          </div>
+          <!-- Email Field -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              placeholder="example@domain.com"
+              [(ngModel)]="email"
+              required
+            />
+            <div *ngIf="registerForm.submitted && !email" class="text-danger small">
+              Email is required.
+            </div>
+          </div>
+          <!-- Password Field -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              placeholder="Enter password"
+              [(ngModel)]="password"
+              required
+            />
+            <div *ngIf="registerForm.submitted && !password" class="text-danger small">
+              Password is required.
+            </div>
+          </div>
+          <!-- Display any error message -->
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+          <!-- Register Button -->
+          <button type="submit" class="btn btn-register w-100" [disabled]="!registerForm.valid">
+            Register
+          </button>
+        </form>
+      </div>
+      <!-- "Already have an account? Log In" Link -->
+      <div class="login-link text-center">
+        <p>Already have an account? <a routerLink="/login">Log In</a></p>
+      </div>
+    </div>
+  </div>
+  

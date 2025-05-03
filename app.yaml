@@ -1,0 +1,28 @@
+runtime: nodejs20
+
+instance_class: F1
+
+entrypoint: node server.js
+
+env_variables:
+  NODE_ENV: "production"
+  MONGODB_URI: "mongodb+srv://shdhamecha8:Dhamecha%402925@homework3.7vcvge0.mongodb.net/?retryWrites=true&w=majority&appName=Homework3"
+  JWT_SECRET: "your-super-secret-jwt-key-for-auth"
+
+handlers:
+  # Serve API requests through Node
+  - url: /api/.*
+    script: auto
+    secure: always
+  
+  # Serve static assets
+  - url: /(.*\..*$)
+    static_files: frontend/dist/frontend/browser/\1
+    upload: frontend/dist/frontend/browser/.*\..*
+    secure: always
+    
+  # Serve index.html for all other routes (Angular routing)
+  - url: /.*
+    static_files: frontend/dist/frontend/browser/index.html
+    upload: frontend/dist/frontend/browser/index.html
+    secure: always

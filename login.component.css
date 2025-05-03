@@ -1,0 +1,66 @@
+/* login.component.css */
+
+/* Remove forcing full height; keep white background */
+:host {
+    display: block;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Parent container to center the card + link */
+  .login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    /* no min-height: 100vh, so it won't stretch beyond content */
+  }
+  
+  /* Column layout for card and link, stacked vertically */
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* centers the card + link horizontally */
+    gap: 1rem; /* space between card and link */
+  }
+  
+  /* The login card styling */
+  .login-card {
+    width: 420px; 
+    padding: 2rem;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 5px;
+  }
+  
+  /* Adjust the link container margin if needed */
+  .register-link {
+    margin: 0; 
+    font-size: 0.95rem;
+  }
+  
+  .register-link p {
+    margin: -1.5;
+  }
+  
+  /* Dark blue login button */
+  .btn-login {
+    background-color: #003366;
+    border-color: #003366;
+    color: #fff;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+  
+  .btn-login:hover {
+    background-color: #002244;
+    border-color: #002244;
+    color: #fff;
+  }
+  
+  /* Optional: left-align or center the card title */
+  .card-title {
+    text-align: left;
+  }
+  

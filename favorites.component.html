@@ -1,0 +1,10 @@
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="!loading && favorites.length === 0">
+  No favorite artists found.
+</div>
+<div *ngIf="!loading && favorites.length > 0">
+  <div *ngFor="let artist of favorites" (click)="navigateToArtistDetails(artist.artistId)">
+    <h3>{{ artist.artistName }}</h3>
+    <img [src]="artist.thumbnail" alt="{{ artist.artistName }} Thumbnail">
+  </div>
+</div>

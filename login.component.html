@@ -1,0 +1,50 @@
+<!-- login.component.html -->
+<div class="login-page">
+    <div class="login-container">
+      <!-- The Login Card -->
+      <div class="login-card">
+        <h2 class="card-title mb-4">Login</h2>
+        <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+          <!-- Email Field -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              [(ngModel)]="email"
+              placeholder="Enter email"
+              required
+            />
+          </div>
+          <!-- Password Field -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <!-- Login Button -->
+          <button
+            type="submit"
+            class="btn btn-login w-100"
+            [disabled]="!loginForm.valid"
+          >
+            Log In
+          </button>
+        </form>
+      </div>
+  
+      <!-- Registration Link BELOW the card -->
+      <div class="register-link text-center">
+        <p>Don't have an account? <a routerLink="/register">Register</a></p>
+      </div>
+    </div>
+  

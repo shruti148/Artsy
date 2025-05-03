@@ -1,0 +1,23 @@
+<div *ngIf="loading" class="spinner">
+    <!-- Display a spinner using Bootstrap or custom CSS -->
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  
+  <div *ngIf="!loading && similarArtists.length === 0">
+    <p>No similar artists found.</p>
+  </div>
+  
+  <div *ngIf="!loading && similarArtists.length > 0" class="row">
+    <div class="col-md-4" *ngFor="let artist of similarArtists">
+      <div class="card">
+        <img [src]="artist.thumbnail || 'path/to/default/image.png'" class="card-img-top" alt="{{artist.name}}">
+        <div class="card-body">
+          <h5 class="card-title">{{artist.name}}</h5>
+          <!-- Optionally, add more details -->
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,541 @@
+/* Styling for artist cards */
+.card {
+  border: none;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.card h5 {
+  background-color: #0c3d6a;
+  color: white;
+  margin: 0;
+  padding: 10px;
+  font-size: 1rem;
+}
+.artist-card {
+  width: 180px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.spinner-border-sm {
+  width: 0.8rem !important;
+  height: 0.8rem !important;
+  border-width: 0.10em !important;
+}
+
+.artist-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Image Container */
+.card-image-container {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+}
+/* Artist Image */
+.artist-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* New Favorite Button Styling */
+.favorite-button {
+  background-color: #ff5722;
+  border: 2px solid white;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.favorite-button i {
+  font-size: 18px !important;
+  display: inline-block !important;
+}
+
+/* Unfavorited star (white) */
+.favorite-button .far.fa-star {
+  color: white !important;
+  text-shadow: 0 0 2px black;
+}
+
+/* Favorited star (yellow) */
+.favorite-button .fas.fa-star {
+  color: #ffd700 !important;
+  text-shadow: 0 0 2px black;
+}
+
+/* Additional class for when button is in favorited state */
+.favorite-button.is-favorite .fas.fa-star {
+  color: #ffd700 !important;
+}
+
+/* Ensure the star color takes precedence */
+.favorite-button i.fas.fa-star {
+  color: #ffd700 !important;
+}
+
+/* Legacy selectors (keeping for compatibility) */
+.btn-star {
+  background-color: #084c91;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.btn-star i {
+  font-size: 16px !important;
+}
+
+.btn-star .far.fa-star {
+  color: white !important;
+}
+
+.btn-star .fas.fa-star {
+  color: #ffd700 !important;
+}
+
+.horizontal-scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding-bottom: 15px;
+}
+
+/* Make artist cards clickable */
+.card:hover {
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Nav Tabs Styling */
+.nav-tabs {
+  border-bottom: none;
+  display: flex;         /* Ensure flex behavior */
+  justify-content: center;
+  max-width: 64rem;      /* Set width to match your horizontal scroller */
+  margin: 0 auto;
+}
+
+.nav-tabs .nav-item {
+  flex: 1;               /* Each tab fills equally */
+  text-align: center;
+}
+
+/* Base styling for each tab link */
+.nav-tabs .nav-link {
+  background-color: transparent;
+  color: #0c3d6a;        /* Deep blue, matching your theme */
+  border: none;
+  margin-right: 0.5rem;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for non-active tabs */
+.nav-tabs .nav-link:hover {
+  background-color: #e2e6ea;
+  color: #024588;
+}
+
+/* Active tab: blue background, white text */
+.nav-tabs .nav-link.active {
+  background-color: #084c91;
+  color: #ffffff;
+  border: none;
+}
+
+/* Artist Details Section Additional Styles */
+
+/* Artist header styling for the star icon next to name */
+.artist-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.2rem;
+}
+/* Tab content padding adjustment */
+.tab-content {
+  padding: 0.5rem;
+}
+
+/* Make the tab content more compact */
+.tab-pane {
+  padding: 0 0.5rem;
+}
+.artist-details::before, 
+.artist-details::after {
+  content: none;
+}
+
+/* Card artist names (but not the main header) */
+.card .artist-name {
+  background-color: #0a3454;
+  color: white;
+  padding: 8px 4px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Main artist header name */
+.artist-header .artist-name {
+  background-color: transparent;
+  color: #000;
+  padding: 0;
+  text-align: center;
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  margin: 0 !important;
+}
+
+.artist-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Star button styling */
+.artist-header .favorite-button {
+  position: static !important;
+  display: inline-flex !important;
+  margin-left: 0.5rem !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  height: auto;
+  width: auto;
+  padding: 0;
+}
+
+/* Make the star larger to match the image */
+.artist-header .favorite-button i {
+  font-size: 20px !important;
+}
+
+/* Unfavorited star (outline) */
+.artist-header .favorite-button .far.fa-star {
+  color: #333 !important;
+}
+
+/* Favorited star (filled yellow) */
+.artist-header .favorite-button .fas.fa-star {
+  color: #ffd700 !important;
+}
+
+/* Biography text styling - preserve newlines */
+.artist-biography p {
+  white-space: pre-wrap !important; /* This preserves line breaks in the text */
+  font-size: 0.9rem !important;
+  line-height: 1.4 !important;
+  text-align: left !important;
+  word-break: keep-all !important;
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+  -ms-hyphens: none !important;
+  overflow-wrap: normal !important;
+}
+
+/* Override any inline styles */
+.artist-biography {
+  line-height: 1.5 !important;
+  word-wrap: break-word !important;
+}
+
+/* Add proper spacing and alignment */
+.artist-details {
+  text-align: center;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  margin-top: 0.3rem;
+}
+
+/* Artist header spacing */
+.artist-header {
+  margin-bottom: 0.2rem !important;
+}
+
+/* Refinements for the Similar Artists section */
+.similar-artists .card {
+  border: none;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.similar-artists .card:hover {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  transform: translateY(-2px);
+}
+
+/* Ensure the favorite button doesn't trigger the card click */
+.favorite-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 100;
+}
+
+/* Make the blue background of h5 extend full width */
+.similar-artists .card h5 {
+  width: 100%;
+  text-align: center;
+  background-color: #0c3d6a;
+  color: white;
+  padding: 20px 5px;
+  margin: 0;
+  font-size: 1rem;
+}
+similar-artists-container {
+  display: flex;
+  justify-content: flex-start; /* Start from left */
+  gap: 8px; /* Reduced gap between cards */
+  max-width: 100%;
+  margin: 0;
+}
+
+/* Fix for the excess space after Similar Artists section */
+.similar-artists {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.similar-artists .row {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.similar-artists h5 {
+  margin-bottom: 0 !important;
+}
+
+/* Right-align the Similar Artists heading */
+.text-right {
+  text-align: left !important;
+}
+
+/* Add minimal spacing between artist cards */
+.similar-artists .card.mx-1 {
+  margin-left: 0.25rem !important;
+  margin-right: 0.25rem !important;
+}
+
+/* View Categories button styling - light gray with black text initially */
+.btn-view-categories, 
+.btn-primary.btn-view-categories {
+  background-color: #f8f9fa !important;  /* Light gray background */
+  color: #212529 !important;            /* Black text */
+  text-align: center;
+  font-size: 0.9rem;
+  border: none !important;
+  border-radius: 0 !important;           /* No border radius for full width look */
+  padding: 8px 12px;
+  margin-top: 10px;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: none;
+  font-weight: normal;
+  box-shadow: none !important;
+}
+
+/* On hover - dark blue background with white text */
+.btn-view-categories:hover, 
+.btn-primary.btn-view-categories:hover {
+  background-color: #084c91 !important;  /* Dark blue */
+  color: white !important;
+}
+/* Modal styling to exactly match Image 2 */
+.modal-header {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.modal-title {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.modal-body {
+  padding-top: 10px;
+}
+
+/* Style for category cards to match Image 2 */
+.modal-body .card {
+  border-radius: 4px;
+  overflow: hidden;
+  transition: none;
+  box-shadow: none;
+}
+
+.modal-body .card-footer {
+  padding: 8px 4px;
+  border-top: none;
+}
+
+.modal-body .card-footer small {
+  font-size: 0.85rem;
+}
+
+/* FAVORITES VIEW STYLES */
+.favorites-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.favorite-artist-card {
+  height: 150px;
+  background-color: #333;
+  background-size: cover;
+  background-position: center;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.card-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+  padding: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+/* Notification container */
+/* Notification Container */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1030;
+  width: 300px;
+}
+
+.notification-alert {
+  position: relative;
+  margin-bottom: 10px;
+  padding-right: 30px; /* Make space for close button */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.notification-content {
+  display: inline-block;
+  margin-right: 30px; /* Space from close button */
+}
+
+.notification-close {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.notification-close:hover {
+  opacity: 1;
+}
+
+/* Loading spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* No favorites message */
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 10px 15px;
+  border-radius: 4px;
+  text-align: center;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.artist-details {
+  flex-grow: 1;
+}
+
+.artist-details h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.artist-meta {
+  margin-top: 5px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.birth-death, .nationality {
+  margin-bottom: 2px;
+}
+
+.time-ago {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.remove-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.6);
+  color: white;
+  padding: 3px 8px;
+  font-size: 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.remove-button:hover {
+  background-color: rgba(255,255,255,0.2);
+}

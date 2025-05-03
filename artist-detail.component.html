@@ -1,0 +1,91 @@
+<p class="test-notice">THIS IS THE UPDATED TEMPLATE</p>
+
+<!-- artist-detail.comp.html -->
+<div class="container" *ngIf="artist">
+  <!-- Artist Header with Name and Favorites Toggle -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>{{ artist.name }}</h2>
+    <!-- Favorites Toggle Button (visible only when logged in) -->
+    <button *ngIf="isLoggedIn" class="btn btn-sm favorite-btn" (click)="toggleFavorite()">
+      <i [ngClass]="{'fas fa-star text-warning': isFavorite, 'far fa-star': !isFavorite}"></i>
+    </button>
+  </div>
+
+  <!-- Tab Navigation -->
+  <ul class="nav nav-tabs" id="artistTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="artist-info-tab" data-bs-toggle="tab" data-bs-target="#artist-info" type="button" role="tab" aria-controls="artist-info" aria-selected="true">
+        Artist Info
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="artworks-tab" data-bs-toggle="tab" data-bs-target="#artworks" type="button" role="tab" aria-controls="artworks" aria-selected="false">
+        Artworks
+      </button>
+    </li>
+  </ul>
+
+  <!-- Tab Content -->
+  <div class="tab-content mt-4" id="artistTabContent">
+    <!-- Artist Info Tab -->
+    <div class="tab-pane fade show active" id="artist-info" role="tabpanel" aria-labelledby="artist-info-tab">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="artist-info">
+            <div *ngIf="artist.nationality" class="mb-2">
+              <strong>Nationality:</strong> {{ artist.nationality }}
+            </div>
+            <div *ngIf="artist.birthday" class="mb-2">
+              <strong>Born:</strong> {{ artist.birthday }}
+            </div>
+            <div *ngIf="artist.deathday" class="mb-2">
+              <strong>Died:</strong> {{ artist.deathday }}
+            </div>
+            <div *ngIf="artist.biography" class="mt-3 biography">
+              <strong>Biography:</strong>
+              <p class="mt-2">{{ artist.biography }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" *ngIf="artist.thumbnail">
+          <img [src]="artist.thumbnail"
+               class="img-fluid rounded shadow"
+               alt="{{ artist.name }}"
+               style="max-height: 300px; object-fit: contain;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Artworks Tab -->
+    <div class="tab-pane fade" id="artworks" role="tabpanel" aria-labelledby="artworks-tab">
+      <div *ngIf="artist.artworks && artist.artworks.length; else noArtworks">
+        <div class="row">
+          <div class="col-md-4 mb-4" *ngFor="let artwork of artist.artworks">
+            <div class="card h-100 shadow-sm artist-card">
+              <img [src]="artworksService.getArtworkThumbnail(artwork)"
+                   class="card-img-top"
+                   alt="{{ artwork.title }}"
+                   style="height: 200px; object-fit: cover;">
+              <div class="card-body">
+                <h5 class="card-title">{{ artwork.title }}</h5>
+                <p class="card-text text-muted">
+                  {{ formatArtworkDate(artwork.date) }}
+                </p>
+              </div>
+              <div class="card-footer bg-transparent">
+                <button class="btn btn-primary w-100" (click)="showCategories(artwork)">
+                  Show Categories
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noArtworks>
+        <div class="alert alert-info">
+          No artworks available for this artist.
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+/* Custom Navbar Styles */
+.custom-navbar {
+    background-color: #f8f8fa !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0.25rem 5rem;
+  }
+  
+  /* Brand styling: Pinned to the left with no extra left padding */
+  .custom-brand {
+    font-size: 1.5rem;
+    
+    color: #000 !important;
+    margin-left: 0;
+  }
+  
+  /* Navigation link styling */
+  .custom-nav-link {
+    color: #000 !important;
+    font-size: 1rem;
+  }
+  
+  /* Active nav link styling */
+  .custom-nav-link.active {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  
+  /* Custom Search Button using color #004484 */
+  .btn-custom-search {
+    background-color: #004484;
+    border-color: #004484;
+    color: #fff;
+    font-size: 1rem;
+  }
+  
+  .btn-custom-search:hover {
+    background-color: #00376b;
+    border-color: #00376b;
+    color: #fff;
+  }
+  
+  /* Profile image styling */
+  .profile-img {
+    width: 30px;
+    height: 30px;
+  }
+  
+  /* Slim Footer styling */
+  .custom-footer {
+    padding: 0.5rem 0;
+  }
+  
+  /* Footer logo styling */
+  .footer-logo {
+    height: 20px;
+  }
+  

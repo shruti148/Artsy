@@ -1,0 +1,82 @@
+<div class="d-flex flex-column min-vh-100">
+  <!-- Header: Navbar -->
+  <nav class="navbar navbar-expand-lg custom-navbar">
+    <div class="container-fluid">
+      <!-- Brand (Artist Search) -->
+      <a class="navbar-brand custom-brand" routerLink="/">Artist Search</a>
+      
+      <!-- Mobile Toggle -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarNav" aria-controls="navbarNav"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <!-- Navigation Items -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <!-- Custom Search Button -->
+          <li class="nav-item">
+            <button class="btn btn-custom-search me-3" (click)="navigateToSearch()">Search</button>
+          </li>
+          
+          <!-- Public Links -->
+          <ng-container *ngIf="!isLoggedIn">
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link" routerLink="/login" routerLinkActive="active">
+                Log In
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link" routerLink="/register" routerLinkActive="active">
+                Register
+              </a>
+            </li>
+          </ng-container>
+          
+          <!-- Authenticated Links -->
+          <ng-container *ngIf="isLoggedIn">
+            <li class="nav-item">
+              <a class="nav-link custom-nav-link" routerLink="/favorites" routerLinkActive="active">
+                Favorites
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle custom-nav-link d-flex align-items-center" href="#"
+                 id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img [src]="profileImageUrl" alt="User" class="rounded-circle profile-img me-2">
+                {{ fullName }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" (click)="deleteAccount()">Delete account</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" (click)="logout()">Log out</a>
+                </li>
+              </ul>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Main Content Area -->
+  <main class="flex-grow-1">
+    <router-outlet></router-outlet>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-2 mt-auto custom-footer">
+    <div class="container">
+      <p class="mb-0">
+        Powered by
+        <a href="https://www.artsy.net" target="_blank" class="text-white text-decoration-none">
+          <img src="assets/artsy_logo.svg" alt="Artsy" class="footer-logo me-1">
+          Artsy.
+        </a>
+      </p>
+    </div>
+  </footer>
+</div>
